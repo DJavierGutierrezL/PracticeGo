@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { storageService } from '../services/storageService';
 import { geminiService } from '../services/geminiService';
@@ -7,9 +8,11 @@ import { TrashIcon, UploadIcon } from './icons/Icons';
 interface SettingsProps {
     theme: Theme;
     setTheme: (theme: Theme) => void;
+    user: { username: string; password: string };
+    onUpdateUser: (newUser: { username: string; password: string }) => void;
 }
 
-export const Settings: React.FC<SettingsProps> = ({ theme, setTheme }) => {
+export const Settings: React.FC<SettingsProps> = ({ theme, setTheme, user, onUpdateUser }) => {
     const [customLessons, setCustomLessons] = useState<Lesson[]>([]);
     const [title, setTitle] = useState('');
     const [formTheme, setFormTheme] = useState('');
@@ -17,6 +20,9 @@ export const Settings: React.FC<SettingsProps> = ({ theme, setTheme }) => {
     const [isExtracting, setIsExtracting] = useState(false);
     const [extractionError, setExtractionError] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    
+    const [username, setUsername] = useState(user.username);
+    const [password, setPassword] = useState(user.password);
 
     useEffect(() => {
         setCustomLessons(storageService.getCustomLessons());
@@ -93,12 +99,53 @@ export const Settings: React.FC<SettingsProps> = ({ theme, setTheme }) => {
         setTheme({ ...theme, backgroundName: background, mode: isDark ? 'dark' : 'light' });
     };
 
+    const handleUserUpdate = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!username.trim() || !password.trim()) {
+            alert('El nombre de usuario y la contraseña no pueden estar vacíos.');
+            return;
+        }
+        onUpdateUser({ username, password });
+    };
+
     return (
         <div className="max-w-4xl mx-auto">
             <header className="text-center mb-8">
                 <h2 className="text-4xl font-bold text-gray-700 dark:text-gray-200">Ajustes</h2>
                 <p className="text-gray-500 dark:text-gray-400 mt-2 text-lg">Personaliza la apariencia y gestiona tus lecciones.</p>
             </header>
+
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 mb-8">
+                <h3 className="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-4">Perfil de Usuario</h3>
+                <form onSubmit={handleUserUpdate} className="space-y-4">
+                     <div>
+                        <label htmlFor="username-setting" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre de Usuario</label>
+                        <input
+                            type="text"
+                            id="username-setting"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="password-setting" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Contraseña</label>
+                        <input
+                            type="password"
+                            id="password-setting"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-100 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+                        />
+                    </div>
+                     <button
+                        type="submit"
+                        className="w-full sm:w-auto px-6 py-2 bg-primary-600 text-white font-semibold rounded-lg shadow-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors"
+                    >
+                        Guardar Cambios
+                    </button>
+                </form>
+            </div>
 
             <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 mb-8">
                 <h3 className="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-4">Apariencia</h3>

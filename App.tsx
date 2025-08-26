@@ -13,6 +13,7 @@ import { MyProgress } from './components/MyProgress';
 import { PronunciationPractice } from './components/PronunciationPractice';
 import { SpeakingBuddy } from './components/SpeakingBuddy';
 import { Toast } from './components/Toast';
+import { Login } from './components/Login';
 import { geminiService } from './services/geminiService';
 import { progressService } from './services/progressService';
 import type { Lesson, GeneratedLessonMaterials, Theme, ButtonColor, UserProgress, ToastMessage } from './types';
@@ -20,7 +21,9 @@ import type { Lesson, GeneratedLessonMaterials, Theme, ButtonColor, UserProgress
 export type Section = 'lessons' | 'exercises' | 'chat' | 'reading' | 'dailyLesson' | 'settings' | 'dictation' | 'classics' | 'progress' | 'pronunciation' | 'speaking';
 
 const App: React.FC = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeSection, setActiveSection] = useState<Section>('dailyLesson');
+  const [user, setUser] = useState({ username: 'admin', password: '54321' });
   const [theme, setTheme] = useState<Theme>(() => {
     const storedTheme = localStorage.getItem('practicego-theme');
     if (storedTheme) {
@@ -47,7 +50,7 @@ const App: React.FC = () => {
     root.classList.add(theme.mode);
 
     const body = window.document.body;
-    body.className = ''; 
+    body.className = '';
     const bgClasses: Record<Theme['backgroundName'], string> = {
       white: 'bg-gray-50 dark:bg-gray-900',
       dark: 'bg-gray-900',
@@ -113,6 +116,19 @@ const App: React.FC = () => {
   const startThemedChat = () => {
     setActiveSection('chat');
   };
+  
+  const handleLogin = (u: string, p: string): boolean => {
+    if (u === user.username && p === user.password) {
+      setIsAuthenticated(true);
+      return true;
+    }
+    return false;
+  };
+
+  const handleUpdateUser = (newUser: { username: string, password: string }) => {
+    setUser(newUser);
+    showToast('✅ Credenciales actualizadas correctamente.');
+  };
 
   const renderSection = () => {
     switch (activeSection) {
@@ -138,7 +154,7 @@ const App: React.FC = () => {
           onActivityComplete={handleActivityComplete}
         />;
       case 'settings':
-        return <Settings theme={theme} setTheme={setTheme} />;
+        return <Settings theme={theme} setTheme={setTheme} user={user} onUpdateUser={handleUpdateUser} />;
       case 'progress':
         return <MyProgress progress={userProgress} />;
       case 'pronunciation':
@@ -149,6 +165,10 @@ const App: React.FC = () => {
         return <DailyLesson onSelectLesson={handleSelectLesson} isLoading={isLessonLoading} />;
     }
   };
+
+  if (!isAuthenticated) {
+    return <Login onLogin={handleLogin} />;
+  }
 
   return (
     <div className="flex h-screen font-sans">

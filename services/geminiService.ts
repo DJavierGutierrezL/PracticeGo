@@ -3,7 +3,7 @@ import type { PronunciationFeedback, PronunciationWord, WordDefinition, Lesson, 
 
 // IMPORTANT: This assumes the API_KEY is set in the environment.
 // Do not add any UI for entering the key.
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const API_KEY = process.env.API_KEY;
 
 if (!API_KEY) {
   // In a real app, you might want to handle this more gracefully.

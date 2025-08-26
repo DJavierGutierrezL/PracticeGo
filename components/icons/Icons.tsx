@@ -197,27 +197,27 @@ export const PracticeGoIcon = () => (
 );
 
 export const PracticeGoLogo = () => (
-    <svg width="200" height="40" viewBox="0 0 200 40" xmlns="http://www.w3.org/2000/svg">
+    <svg width="240" height="45" viewBox="0 0 240 45" xmlns="http://www.w3.org/2000/svg">
       <style>
-        {`.practice-text { font-family: Verdana, sans-serif; font-size: 30px; font-weight: bold; font-style: italic; }`}
+        {`.practice-text { font-family: Verdana, sans-serif; font-size: 36px; font-weight: bold; font-style: italic; }`}
       </style>
       <text
         x="0"
-        y="30"
+        y="35"
         className="practice-text"
         fill="#2563eb"
       >
         Practice
       </text>
       <text
-        x="118"
-        y="30"
+        x="155"
+        y="35"
         className="practice-text"
         fill="#10B981"
       >
         Go
       </text>
-      <g transform="translate(165, -5) scale(0.15)">
+      <g transform="translate(205, -2) scale(0.18)">
           <path d="M0.3,113.2c-2.6-3.7-2.2-8.5,1.2-11.7L121,1.8c4.4-4,11.1-3.6,15,0.8l20.6,23.3c3.8,4.3,3.7,11-0.4,15.1 L36.7,161.4c-4.2,4.3-11.1,4.5-15.5,0.4L0.8,124.9C-0.7,122.4-0.8,116.3,0.3,113.2z" fill="#34D399"/>
           <path d="M156.6,25.9L36.7,161.4c-4.2,4.3-11.1,4.5-15.5,0.4L0.8,124.9c-1.5-2.5-1-6,0.5-8.8l136-114.3c3.8-3.2,8.9-2.9,12.3,0.7 L156.6,25.9z" fill="#10B981"/>
       </g>
