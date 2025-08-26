@@ -1,0 +1,7 @@
+{
+  "name": "PracticeGo",
+  "description": "PracticeGo: An interactive web application for A1 English learners to practice conversation, improve pronunciation with AI feedback, and review vocabulary with flashcards.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
